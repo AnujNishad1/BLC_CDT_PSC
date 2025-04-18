@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 40px;
+        background: #f0f0f0;
+        text-align: center;
+      }
+      input {
+        width: 60%;
+        padding: 10px;
+        font-size: 16px;
+      }
+      button {
+        margin-top: 15px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+      #result {
+        margin-top: 30px;
+        font-size: 18px;
+        white-space: pre-line;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>🚀 Page Speed Checker</h2>
+    <input id="url" type="text" placeholder="Enter website URL" />
+    <br />
+    <button onclick="check()">Check Speed</button>
+    <div id="result"> </div>
+
+    <script>
+      function check() {
+        const url = document.getElementById("url").value;
+        document.getElementById("result").innerText = "⏳ Checking...";
+        google.script.run.withSuccessHandler(function(response) {
+          document.getElementById("result").innerText = response;
+        }).checkPageSpeed(url);
+      }
+    </script>
+  </body>
+</html>

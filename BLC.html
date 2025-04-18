@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body { font-family: Arial; padding: 20px; }
+      input, button { padding: 8px; margin: 5px 0; }
+      table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+      th, td { border: 1px solid #ccc; padding: 8px; }
+      th { background: #f0f0f0; }
+    </style>
+  </head>
+  <body>
+    <h2>🔗 Broken Link Checker</h2>
+    <input type="text" id="url" placeholder="Enter website URL (https://...)">
+    <button onclick="check()">Check Links</button>
+    <div id="output"></div>
+
+    <script>
+      function check() {
+        const url = document.getElementById('url').value;
+        document.getElementById('output').innerHTML = "⏳ Checking...";
+        google.script.run.withSuccessHandler(showResults).checkLinks(url);
+      }
+
+      function showResults(results) {
+        if (!results || results.length === 0) {
+          document.getElementById('output').innerHTML = "❌ No links found.";
+          return;
+        }
+
+        let html = '<table><tr><th>Link</th><th>Status</th><th>Status Code</th></tr>';
+        results.forEach(r => {
+          html += `<tr>
+            <td><a href="${r.url}" target="_blank">${r.url}</a></td>
+            <td style="color:${r.ok ? 'green' : 'red'};">${r.ok ? 'Working' : 'Broken'}</td>
+            <td>${r.status}</td>
+          </tr>`;
+        });
+        html += '</table>';
+        document.getElementById('output').innerHTML = html;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 30px;
+        background-color: #f8f9fa;
+      }
+      input, button {
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+      }
+      button {
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      #timer {
+        font-size: 36px;
+        margin-top: 30px;
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>⏳ Countdown Timer Creator</h2>
+
+    <label for="datetime">Select a future date & time:</label><br>
+    <input type="datetime-local" id="datetime"><br>
+    <button onclick="startCountdown()">Start Countdown</button>
+
+    <div id="timer">--:--:--</div>
+
+    <script>
+      let interval;
+
+      function startCountdown() {
+        clearInterval(interval);
+
+        const targetTime = new Date(document.getElementById('datetime').value).getTime();
+
+        if (isNaN(targetTime)) {
+          document.getElementById('timer').innerHTML = "⚠️ Please select a valid date and time.";
+          return;
+        }
+
+        interval = setInterval(() => {
+          const now = new Date().getTime();
+          const distance = targetTime - now;
+
+          if (distance <= 0) {
+            clearInterval(interval);
+            document.getElementById('timer').innerHTML = "🎉 Time's up!";
+            return;
+          }
+
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          document.getElementById('timer').innerHTML =
+            `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+        }, 1000);
+      }
+
+      function pad(num) {
+        return num < 10 ? '0' + num : num;
+      }
+    </script>
+  </body>
+</html>
